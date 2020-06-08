@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DruidConfig {
 
+
     //@ConfigurationProperties这个注解的作用
     //                                  1.将配置文件中的spring.druid这项配置与DruidDataSource中的属性进行绑定。DruidDataSource也会成为一个spring bean
     //                                  2.将bean方法中的返回对象与外部的配置文件进行绑定
