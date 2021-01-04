@@ -6,4 +6,31 @@
     <select id="selectUsers" resultType="user">
         select id,name,phone,email from user;
     </select>
+
+    <insert id="insert" >
+        insert into user (
+        name,
+        phone,
+        email,
+        aboutme,
+        passwd,
+        avator,
+        type,
+        create_time,
+        enable)
+        values(
+        #{name},
+        #{phone},
+        #{email},
+        #{aboutme},
+        #{passwd},
+        #{avatar},
+        #{type},
+        #{createTime},
+        #{enable})
+    </insert>
+
+    <delete id="delete" parameterType="String" >
+        delete from user where email = #{email}
+    </delete>
 </mapper>
