@@ -14,7 +14,7 @@
         email,
         aboutme,
         passwd,
-        avator,
+        avatar,
         type,
         create_time,
         enable)

@@ -11,6 +11,8 @@ import com.lxinyu.house.common.utils.BeanHelper;
 import com.lxinyu.house.common.utils.HashUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +45,13 @@ public class UserService {
     private UserMapper userMapper;
 
     @Autowired
+    private MailService mailService;
+
+    @Autowired
     private FileService fileService;
+
+    @Value("${domain.name}")
+    private String domainName;
 
     public List<User> getUsers(){
         return userMapper.selectUsers();
@@ -81,13 +89,19 @@ public class UserService {
     /**
      * 1. 缓存key-email的关系
      * 2. 借助spring mail 发送邮件
-     * 3. 借助异步框架进行异步操作
+     * 3. 借助异步框架进行异步操作 引入异步框架（Springboot已经默认引入了，只需加入@Async注解即可，在调用该方法时，spring会调用一个线程池，将该任务放到线程池中），然后在启动类里添加@EnableAsync注解即可
      * @param email
      */
-    private void registerNotify(String email){
+    @Async
+    public void registerNotify(String email){
         // 随机生成一个10位的字符串，并将生成的字符串放到本地缓存中存放
         String randomKey = RandomStringUtils.randomAlphabetic(10);
+        registerCache.put(randomKey, email);
 
+        // 定义一个激活链接
+        String url = "http://" + domainName + "/accounts/verify?key=" + randomKey;
+
+        mailService.sendMail(domainName, url, email);
     }
 
 
