@@ -20,31 +20,31 @@ public class FileService {
 
     public List<String> getImgPath(List<MultipartFile> files){
         List<String> paths = Lists.newArrayList();
-//        files.forEach(file -> {
-//            File localFile = null;
-//            if(!file.isEmpty()){
-//                try {
-//                    localFile = saveToLocal(file, filePath);
-//                    String path = StringUtils.substringAfterLast(localFile.getAbsolutePath(), filePath);
-//                    paths.add(path);
-//                } catch (Exception e){
-//                    throw new IllegalArgumentException(e);
-//                }
-//            }
-//        });
-        for(int i = 0 ; i < files.size() ; i++){
+        files.forEach(file -> {
             File localFile = null;
-            if(!files.get(i).isEmpty()){
+            if(!file.isEmpty()){
                 try {
-                    localFile = saveToLocal(files.get(i), filePath);
-                    // substringAfterLast(string1 , string2) 去string1内分隔符string2后的字符串
+                    localFile = saveToLocal(file, filePath);
                     String path = StringUtils.substringAfterLast(localFile.getAbsolutePath(), filePath);
                     paths.add(path);
                 } catch (Exception e){
                     throw new IllegalArgumentException(e);
                 }
             }
-        }
+        });
+//        for(int i = 0 ; i < files.size() ; i++){
+//            File localFile = null;
+//            if(!files.get(i).isEmpty()){
+//                try {
+//                    localFile = saveToLocal(files.get(i), filePath);
+//                    // substringAfterLast(string1 , string2) 去string1内分隔符string2后的字符串
+//                    String path = StringUtils.substringAfterLast(localFile.getAbsolutePath(), filePath);
+//                    paths.add(path);
+//                } catch (Exception e){
+//                    throw new IllegalArgumentException(e);
+//                }
+//            }
+//        }
         return paths;
     }
 

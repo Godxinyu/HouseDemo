@@ -39,11 +39,23 @@ public class UserController {
         ResultMsg resultMsg = UserHelper.validate(account);
 
         if(resultMsg.isSuccess() && userService.addAccount(account)){
+            modelMap.put("email", account.getEmail());
             return "accounts/registerSubmit";
         } else {
             return "redirect:/accounts/register?"+resultMsg.asUrlParams();
         }
 
+
+    }
+
+    @RequestMapping("accounts/verify")
+    public String verifyAccount(String key, ModelMap modelMap){
+        boolean result = userService.verifyAccount(key);
+        if(result){
+            return "redirect:/index?"+ResultMsg.successMsg("激活成功").asUrlParams();
+        }else{
+            return "redirect:/accounts/register?"+ResultMsg.errorMsg("激活失败，请重新注册").asUrlParams();
+        }
 
     }
 
