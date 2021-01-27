@@ -11,6 +11,7 @@
         <setting name="defaultExecutorType" value="REUSE" />
         <!-- 事务超时时间 -->
         <setting name="defaultStatementTimeout" value="600" />
+        <setting name="logImpl" value="STDOUT_LOGGING" />
         
     </settings>
     

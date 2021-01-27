@@ -5,8 +5,11 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
 import com.lxinyu.house.biz.mapper.UserMapper;
+import com.lxinyu.house.common.model.User;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -18,6 +21,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class MailService {
+
+    private Logger logger = LoggerFactory.getLogger(MailService.class);
+;
 
     /*
         创建了一个本地缓存，用来存放随机字符串和email的键值对
@@ -82,8 +88,12 @@ public class MailService {
         if (StringUtils.isBlank(userEmail)){
             return false;
         }
-        userMapper.updateUser(userEmail);
+
+        int i = userMapper.updateUser(userEmail);
+        logger.info("更新数据"+i+"条成功");
+
         registerCache.invalidate(key);
+
         return true;
     }
 }

@@ -10,6 +10,8 @@ import com.lxinyu.house.common.model.User;
 import com.lxinyu.house.common.utils.BeanHelper;
 import com.lxinyu.house.common.utils.HashUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class UserService {
 
-
+    private Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -55,10 +57,13 @@ public class UserService {
         if(!imgList.isEmpty()){
             account.setAvatar(imgList.get(0));
         }
+
         BeanHelper.setDefaultProp(account,User.class);
         BeanHelper.onInsert(account);
         account.setEnable(0);
-        userMapper.insert(account);
+        int i = userMapper.insert(account);
+        logger.info("插入数据"+i+"条成功");
+
 
         // 发送邮件
         mailService.registerNotify(account.getEmail());

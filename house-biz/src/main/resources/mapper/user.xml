@@ -7,6 +7,10 @@
         select id,name,phone,email from user;
     </select>
 
+    <select id="selectUserWithEmail" resultType="user">
+        select * from user where email = #{email}
+    </select>
+
     <insert id="insert" >
         insert into user (
         name,
@@ -31,7 +35,7 @@
     </insert>
 
     <delete id="delete" parameterType="String" >
-        delete from user where email = #{email}
+        delete from user where email = #{email} and enable = 0;
     </delete>
 
     <update id="updateUser" parameterType="String" >
